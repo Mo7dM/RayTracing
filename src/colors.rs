@@ -15,6 +15,6 @@ impl Color {
 
 pub fn write_color(out: &mut impl Write,pixel_color : Color){
     let r = (255.999*pixel_color.r) as usize;
-    let g = (255.999*pixel_color.r) as usize;
-    let b = (255.999*pixel_color.r) as usize;
+    let g = (255.999*pixel_color.g) as usize;
+    let b = (255.999*pixel_color.b) as usize;
 }

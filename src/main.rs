@@ -11,7 +11,7 @@ fn main() {
         for i in 0..img_width{
             let r = i as f64 / (img_width-1) as f64;
             let g = j as f64 / (img_height-1) as f64;
-            let b= 1.25;
+            let b= 0.25;
 
             let ir = (255.999*r) as usize;
             let ig = (255.999*g) as usize;
