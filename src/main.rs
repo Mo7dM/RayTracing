@@ -1,5 +1,6 @@
 mod vec3;
 mod color;
+mod ray;
 
 use std::io;
 
@@ -16,7 +17,7 @@ fn main() {
             let r = i as f64 / (img_width-1) as f64;
             let g = j as f64 / (img_height-1) as f64;
             let b= 0.25;
-            let pixel_color = Color::new(r,g,b);
+            let pixel_color: vec3::Vec3 = Color::new(r,g,b);
             color::write_color(&mut io::stdout(),pixel_color);
             let ir = (255.999*r) as usize;
             let ig = (255.999*g) as usize;
