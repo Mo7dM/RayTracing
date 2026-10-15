@@ -21,7 +21,7 @@ impl Vec3{
     }
 
     pub fn length_squared(&self) -> f64 { 
-        self.e[0]*self.e[0]*self.e[1]*self.e[1]*self.e[2]*self.e[2]
+        self.e[0]*self.e[0]+self.e[1]*self.e[1]+self.e[2]*self.e[2]
     }
     // pub fn zero() -> Vec3 {
     //     Vec3::new(0.0, 0.0, 0.0)
