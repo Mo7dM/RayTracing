@@ -13,7 +13,7 @@ fn main() {
     let aspect_raito = 16.0/9.0;
     let img_width = 400;
     let img_height = (img_width as f64/aspect_raito) as i32;
-    // camera?
+    // camera
     let viewport_height = 2.0;
     let viewport_width = aspect_raito * viewport_height;
     let focal_length = 1.0;
