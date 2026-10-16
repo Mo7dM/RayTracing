@@ -2,13 +2,16 @@ mod vec3;
 mod color;
 mod ray;
 mod objects;
+mod hittable;
 
 use std::io;
 
 use color::Color;
 use ray::Ray;
 use vec3::{Point3,Vec3};
-use objects::sphere::hit_sphere;
+use objects::sphere::Sphere;
+use hittable::{HitRecord,Hittable,HittableList};
+use std::f64::INFINITY; // this thing i will be change to another file
 
 fn main() {
     // img config
@@ -32,18 +35,22 @@ fn main() {
             let u = i as f64 / (img_width-1) as f64;
             let v = j as f64 / (img_height-1) as f64;
             let r= Ray::new(origin, lowleftcorner+u*horizontal+v*vertical-origin);
-            let pixel_color = ray_color(&r);
+            let mut world = HittableList::new();
+            world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
+            world.add(Box::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
+            let pixel_color = ray_color(&r,&world);
             color::write_color(&mut io::stdout(), pixel_color);
         }
     }
     eprintln!("\rDone.\n")
 }
 
-fn ray_color(r: &Ray) -> Color{
-    if hit_sphere(Point3::new(0.0, 0.0, -1.0),0.5,r){
-        return Color::new(1.0, 0.0, 0.0);
+fn ray_color(r: &Ray, world: &dyn Hittable) -> Color {
+    let mut rec = HitRecord::new();
+    if world.hit(r, 0.0, INFINITY, &mut rec) {
+        return 0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0));
     }
     let unit_direction = vec3::unit_vector(r.direction());
-    let t = 0.5*(unit_direction.y()+1.0);
-    (1.0-t)*Color::new(1.0,1.0,1.0)+t*Color::new(0.5,0.7,1.0)
+    let t = 0.5 * (unit_direction.y() + 1.0);
+    (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
 }
