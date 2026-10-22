@@ -12,6 +12,7 @@ use vec3::{Point3,Vec3};
 use objects::sphere::Sphere;
 use hittable::{HitRecord,Hittable,HittableList};
 use std::f64::INFINITY; // this thing i will be change to another file
+use ray::ray_color;
 
 fn main() {
     // img config
@@ -43,14 +44,4 @@ fn main() {
         }
     }
     eprintln!("\rDone.\n")
-}
-
-fn ray_color(r: &Ray, world: &dyn Hittable) -> Color {
-    let mut rec = HitRecord::new();
-    if world.hit(r, 0.0, INFINITY, &mut rec) {
-        return 0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0));
-    }
-    let unit_direction = vec3::unit_vector(r.direction());
-    let t = 0.5 * (unit_direction.y() + 1.0);
-    (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
 }
