@@ -3,3 +3,5 @@
 *.ppm
 
 Cargo.lock
+
+/steps
