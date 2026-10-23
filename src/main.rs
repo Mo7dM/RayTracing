@@ -3,6 +3,7 @@ mod color;
 mod ray;
 mod objects;
 mod hittable;
+mod light;
 
 use std::io;
 
@@ -13,6 +14,8 @@ use objects::sphere::Sphere;
 use hittable::{HitRecord,Hittable,HittableList};
 use std::f64::INFINITY; // this thing i will be change to another file
 use ray::ray_color;
+
+use crate::light::Light;
 
 fn main() {
     // img config
@@ -39,7 +42,8 @@ fn main() {
             let mut world = HittableList::new();
             world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
             world.add(Box::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
-            let pixel_color = ray_color(&r,&world);
+            let mut light = Light::new(Vec3::new(-3.0, 5.0, 1.0), 1.0);
+            let pixel_color = ray_color(&r,&world,&light);
             color::write_color(&mut io::stdout(), pixel_color);
         }
     }

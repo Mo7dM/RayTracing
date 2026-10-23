@@ -1,6 +1,6 @@
 use std::f64::INFINITY;
 
-use crate::{color::Color, hittable::{HitRecord, Hittable}, vec3::{self, Point3, Vec3}};
+use crate::{color::Color, hittable::{HitRecord, Hittable}, light::Light, vec3::{self, Point3, Vec3}};
 
 #[derive(Default)]
 pub struct Ray {
@@ -28,10 +28,12 @@ impl Ray{
     }
 }
 
-pub fn ray_color(r: &Ray, world: &dyn Hittable) -> Color {
+pub fn ray_color(r: &Ray, world: &dyn Hittable,light:&Light) -> Color {
     let mut rec = HitRecord::new();
     if world.hit(r, 0.0, INFINITY, &mut rec) {
-        return 0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0));
+        let direction_to_light = vec3::unit_vector(light.position - rec.p);
+        let brightness = vec3::dot(rec.normal, direction_to_light).max(0.0) * light.intensity;
+        return brightness * Color::new(1.0, 1.0, 1.0);
     }
     let unit_direction = vec3::unit_vector(r.direction());
     let t = 0.5 * (unit_direction.y() + 1.0);
