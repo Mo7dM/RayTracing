@@ -1,20 +1,22 @@
-mod vec3;
 mod color;
-mod ray;
-mod objects;
 mod hittable;
 mod light;
+mod objects;
+mod ray;
+mod vec3;
 
 use std::io;
 
 use color::Color;
-use ray::Ray;
-use vec3::{Point3,Vec3};
+use hittable::{HitRecord, Hittable, HittableList};
+use objects::cube::Cube;
+use objects::cylinder::Cylinder;
 use objects::plane::Plane;
 use objects::sphere::Sphere;
-use hittable::{HitRecord,Hittable,HittableList};
-use std::f64::INFINITY; // this thing i will be change to another file
+use ray::Ray;
 use ray::ray_color;
+use std::f64::INFINITY; // this thing i will be change to another file
+use vec3::{Point3, Vec3};
 
 use crate::light::Light;
 
@@ -44,6 +46,12 @@ fn main() {
     println!("P3\n {img_width} {img_height}\n255");
     let mut world = HittableList::new();
     world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
+    world.add(Box::new(Cube::new(Point3::new(-1.25, -0.15, -1.5), 0.7)));
+    world.add(Box::new(Cylinder::new(
+        Point3::new(1.25, 0.0, -1.7),
+        0.35,
+        1.0,
+    )));
     world.add(Box::new(Plane::new(
         Point3::new(0.0, -0.5, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
