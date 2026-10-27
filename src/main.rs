@@ -28,10 +28,18 @@ fn main() {
     let viewport_width = aspect_raito * viewport_height;
     let focal_length = 1.0;
 
-    let origin = Point3::new(0.0, 0.0, 0.0);
-    let horizontal = Vec3::new(viewport_width, 0.0, 0.0);
-    let vertical = Vec3::new(0.0, viewport_height, 0.0);
-    let lowleftcorner = origin - horizontal / 2.0-vertical/2.0-Vec3::new(0.0, 0.0, focal_length);
+    let camera_position = Point3::new(1.0, 0.5, 0.0);
+    let target = Point3::new(0.0, 0.0, -1.0);
+    let world_up = Vec3::new(0.0, 1.0, 0.0);
+
+    let camera_back = vec3::unit_vector(camera_position - target);
+    let camera_right = vec3::unit_vector(vec3::cross(world_up, camera_back));
+    let camera_up = vec3::cross(camera_back, camera_right);
+
+    let origin = camera_position;
+    let horizontal = viewport_width * camera_right;
+    let vertical = viewport_height * camera_up;
+    let lowleftcorner = origin - horizontal / 2.0 - vertical / 2.0 - focal_length * camera_back;
 
     println!("P3\n {img_width} {img_height}\n255");
     let mut world = HittableList::new();
