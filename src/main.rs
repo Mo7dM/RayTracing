@@ -10,6 +10,7 @@ use std::io;
 use color::Color;
 use ray::Ray;
 use vec3::{Point3,Vec3};
+use objects::plane::Plane;
 use objects::sphere::Sphere;
 use hittable::{HitRecord,Hittable,HittableList};
 use std::f64::INFINITY; // this thing i will be change to another file
@@ -35,7 +36,10 @@ fn main() {
     println!("P3\n {img_width} {img_height}\n255");
     let mut world = HittableList::new();
     world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
-    world.add(Box::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
+    world.add(Box::new(Plane::new(
+        Point3::new(0.0, -0.5, 0.0),
+        Vec3::new(0.0, 1.0, 0.0),
+    )));
     let light = Light::new(Vec3::new(-3.0, 5.0, 1.0), 1.0);
     for j in (0..img_height).rev() {
         eprint!("\rScanning Remaining {}", j );
