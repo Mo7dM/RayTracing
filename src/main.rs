@@ -26,12 +26,12 @@ fn main() {
     let img_width = 400;
     let img_height = (img_width as f64/aspect_raito) as i32;
     // camera
-    let viewport_height = 2.0;
+    let viewport_height = 1.0;
     let viewport_width = aspect_raito * viewport_height;
     let focal_length = 1.0;
 
-    let camera_position = Point3::new(1.0, 0.5, 0.0);
-    let target = Point3::new(0.0, 0.0, -1.0);
+    let camera_position = Point3::new(3.0, 2.0, 4.0);
+    let target = Point3::new(0.0, 0.0, -1.5);
     let world_up = Vec3::new(0.0, 1.0, 0.0);
 
     let camera_back = vec3::unit_vector(camera_position - target);
@@ -46,11 +46,9 @@ fn main() {
     println!("P3\n {img_width} {img_height}\n255");
     let mut world = HittableList::new();
     world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
-    world.add(Box::new(Cube::new(Point3::new(-1.25, -0.15, -1.5), 0.7)));
+    world.add(Box::new(Cube::new(Point3::new(-2.0, -0.15, -2.0), 0.7)));
     world.add(Box::new(Cylinder::new(
-        Point3::new(1.25, 0.0, -1.7),
-        0.35,
-        1.0,
+        Point3::new(1.5, -0.15, -2.0), 0.3, 0.7,
     )));
     world.add(Box::new(Plane::new(
         Point3::new(0.0, -0.5, 0.0),
