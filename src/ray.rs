@@ -2,7 +2,7 @@ use std::f64::INFINITY;
 
 use crate::{
     color::Color,
-    hittable::{HitRecord, Hittable, HittableList},
+    hittable::{HitRecord, Hittable},
     light::Light,
     vec3::{self, Point3, Vec3},
 };
@@ -49,7 +49,7 @@ pub fn ray_color(r: &Ray, world: &dyn Hittable, light: &Light) -> Color {
         } else {
             vec3::dot(rec.normal, direction_to_light).max(0.0) * light.intensity
         };
-        return (ambient + diffuse) * Color::new(1.0, 1.0, 1.0);
+        return (ambient + diffuse) * rec.color;
         // let brightness = vec3::dot(rec.normal, direction_to_light).max(0.05) * light.intensity;
         // return brightness * Color::new(1.0, 1.0, 1.0);
     }

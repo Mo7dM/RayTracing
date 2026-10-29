@@ -1,4 +1,5 @@
 use crate::ray::Ray;
+use crate::color::Color;
 use crate::vec3::{self, Point3, Vec3};
 
 #[derive(Clone, Default)]
@@ -6,7 +7,8 @@ pub struct HitRecord{
     pub p:Point3,
     pub normal:Vec3,
     pub t:f64,
-    pub front_face:bool
+    pub front_face:bool,
+    pub color:Color
 }
 
 impl HitRecord {
@@ -25,6 +27,28 @@ impl HitRecord {
 
 pub trait Hittable{
     fn hit(&self, ray:&Ray,tmin:f64,tmax:f64,rec:&mut HitRecord) -> bool;
+}
+
+pub struct ColoredObject {
+    object: Box<dyn Hittable>,
+    color: Color,
+}
+
+impl ColoredObject {
+    pub fn new(object: Box<dyn Hittable>, color: Color) -> Self {
+        Self { object, color }
+    }
+}
+
+impl Hittable for ColoredObject {
+    fn hit(&self, ray:&Ray, t_min:f64, t_max:f64, rec:&mut HitRecord) -> bool {
+        if self.object.hit(ray, t_min, t_max, rec) {
+            rec.color = self.color;
+            true
+        } else {
+            false
+        }
+    }
 }
 //list
 #[derive(Default)]
